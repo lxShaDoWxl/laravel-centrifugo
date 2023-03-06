@@ -1,7 +1,7 @@
 {
     "name": "denis660/laravel-centrifugo",
     "type": "library",
-    "description": "Centrifugo broadcaster for laravel 6.20.26-8 and Centrifugo >= 2.8.1",
+    "description": "Centrifugo broadcaster for laravel 6.20.26-10 and Centrifugo >= 2.8.1",
     "keywords": ["laravel-broadcaster","broadcaster", "laravel", "centrifugo", "web socket", "web-socket", "socket", "real time"],
     "license": "MIT",
     "authors": [
@@ -19,12 +19,19 @@
     },
     "require": {
         "php": "^7.4|^8.0",
-       "laravel/framework": "^8.75.0|^9.0",
+       "laravel/framework": "^8.75.0|^9.0|^10.0",
         "guzzlehttp/guzzle": "~6.0|^7.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^3.7",
-        "phpunit/phpunit": "^6||^7||^8"
+        "nunomaduro/larastan": "^2.2.9",
+        "orchestra/testbench": "^8.0",
+        "phpstan/phpstan-strict-rules": "^1.1",
+        "phpunit/phpunit": "^9.5.10",
+        "timeweb/phpstan-enum": "^3.0",
+        "phpstan/phpstan": "1.10.3",
+        "rector/rector": "^0.15.20",
+        "driftingly/rector-laravel": "^0.16.1",
+        "laravel/pint": "^1.6"
     },
     "autoload": {
         "psr-4": {
@@ -47,5 +54,11 @@
         "sort-packages": true
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "scripts": {
+        "phpstan": "vendor/bin/phpstan analyse --memory-limit=1G",
+        "rector": "vendor/bin/rector process --memory-limit=1G",
+        "pint": "vendor/bin/pint -v",
+        "test": "vendor/bin/phpunit"
+    }
 }

@@ -1,0 +1,9 @@
+{
+  "preset": "laravel",
+  "exclude": [
+    "vendor"
+  ],
+  "notName": [
+    "_ide_helper.php"
+  ]
+}

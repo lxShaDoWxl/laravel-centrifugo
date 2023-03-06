@@ -20,8 +20,6 @@ class CentrifugoBroadcaster extends Broadcaster
 
     /**
      * Create a new broadcaster instance.
-     *
-     * @param Centrifugo $centrifugo
      */
     public function __construct(Centrifugo $centrifugo)
     {
@@ -31,8 +29,7 @@ class CentrifugoBroadcaster extends Broadcaster
     /**
      * Authenticate the incoming request for a given channel.
      *
-     * @param \Illuminate\Http\Request $request
-     *
+     * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
     public function auth($request)
@@ -43,6 +40,7 @@ class CentrifugoBroadcaster extends Broadcaster
 
             $response = [];
             $privateResponse = [];
+            $private = false;
             foreach ($channels as $channel) {
                 $channelName = $this->getChannelName($channel);
 
@@ -60,17 +58,16 @@ class CentrifugoBroadcaster extends Broadcaster
             }
 
             return response($private ? $privateResponse : $response);
-        } else {
-            throw new HttpException(401);
         }
+
+        throw new HttpException(401);
     }
 
     /**
      * Return the valid authentication response.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param mixed                    $result
-     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $result
      * @return mixed
      */
     public function validAuthenticationResponse($request, $result)
@@ -81,10 +78,7 @@ class CentrifugoBroadcaster extends Broadcaster
     /**
      * Broadcast the given event.
      *
-     * @param array  $channels
-     * @param string $event
-     * @param array  $payload
-     *
+     * @param  string  $event
      * @return void
      */
     public function broadcast(array $channels, $event, array $payload = [])
@@ -96,7 +90,7 @@ class CentrifugoBroadcaster extends Broadcaster
 
         $response = $this->centrifugo->broadcast($this->formatChannels($channels), $payload);
 
-        if (is_array($response) && !isset($response['error'])) {
+        if (is_array($response) && ! isset($response['error'])) {
             return;
         }
 
@@ -108,8 +102,7 @@ class CentrifugoBroadcaster extends Broadcaster
     /**
      * Get client from request.
      *
-     * @param \Illuminate\Http\Request $request
-     *
+     * @param  \Illuminate\Http\Request  $request
      * @return string
      */
     private function getClientFromRequest($request)
@@ -120,8 +113,7 @@ class CentrifugoBroadcaster extends Broadcaster
     /**
      * Get channels from request.
      *
-     * @param \Illuminate\Http\Request $request
-     *
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     private function getChannelsFromRequest($request)
@@ -134,7 +126,6 @@ class CentrifugoBroadcaster extends Broadcaster
     /**
      * Get channel name without $ symbol (if present).
      *
-     * @param string $channel
      *
      * @return string
      */
@@ -145,10 +136,6 @@ class CentrifugoBroadcaster extends Broadcaster
 
     /**
      * Check channel name by $ symbol.
-     *
-     * @param string $channel
-     *
-     * @return bool
      */
     private function isPrivateChannel(string $channel): bool
     {
@@ -158,8 +145,6 @@ class CentrifugoBroadcaster extends Broadcaster
     /**
      * Make response for client, based on access rights.
      *
-     * @param bool   $access_granted
-     * @param string $client
      *
      * @return array
      */
@@ -178,9 +163,6 @@ class CentrifugoBroadcaster extends Broadcaster
     /**
      * Make response for client, based on access rights of private channel.
      *
-     * @param bool   $access_granted
-     * @param string $channel
-     * @param string $client
      *
      * @return array
      */
@@ -191,8 +173,8 @@ class CentrifugoBroadcaster extends Broadcaster
         return $access_granted ? [
 
             'channel' => $channel,
-            'token'   => $this->centrifugo->generatePrivateChannelToken($client, $channel, 0, $info),
-            'info'    => $this->centrifugo->info(),
+            'token' => $this->centrifugo->generatePrivateChannelToken($client, $channel, 0, $info),
+            'info' => $this->centrifugo->info(),
 
         ] : [
             'status' => 403,

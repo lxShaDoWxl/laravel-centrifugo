@@ -1,0 +1,26 @@
+includes:
+  - vendor/nunomaduro/larastan/extension.neon
+#  - vendor/timeweb/phpstan-enum/extension.neon
+#  - vendor/phpstan/phpstan-strict-rules/rules.neon
+
+parameters:
+    paths:
+        - ./src
+
+    # The level 9 is the highest level
+    level: 5
+
+#    ignoreErrors:
+#        - '#Unsafe usage of new static\(\).#'
+
+    #excludePaths:
+    #    - ./*/*/FileToBeExcluded.php
+
+    checkMissingIterableValueType: false
+    checkModelProperties: true
+    noUnnecessaryCollectionCall: true
+    checkOctaneCompatibility: false
+#    ignoreErrors:
+#      - '#Dynamic call to static method#'
+#      - '#Access to an undefined property SObject::#'
+#      - '#Variable property access on SObject#'
